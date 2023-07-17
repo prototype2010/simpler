@@ -6,7 +6,7 @@ class TestsController < Simpler::Controller
 
     headers['WEIRD_HEADER'] = '1234'
     status(200)
-    render(plain: 'some plain text')
+    render(plain: "Params sent: #{@request.params}")
   end
 
   def create

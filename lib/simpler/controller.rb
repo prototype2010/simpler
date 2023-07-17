@@ -24,6 +24,10 @@ module Simpler
       @response.finish
     end
 
+    def append_path_params(params)
+      @request.params.merge!(params)
+    end
+
     private
 
     def extract_name
