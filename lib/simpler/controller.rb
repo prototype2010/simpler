@@ -2,12 +2,12 @@ require_relative 'view'
 
 module Simpler
   class Controller
-
     attr_reader :name, :request, :response
 
     def initialize(env)
       @name = extract_name
       @request = Rack::Request.new(env)
+      @request.params.merge!(env['matched.params'])
       @response = Rack::Response.new
       @body_written = false
     end
@@ -72,6 +72,7 @@ module Simpler
 
     def proceed_hash_options(options)
       if options.key?(:plain)
+        @request.env['simpler.render'] = :plain
         @response.write(options[:plain].to_s)
       else
         template_error("Applying options #{options.keys} is not implemented yet")

@@ -6,7 +6,6 @@ require_relative 'controller'
 
 module Simpler
   class Application
-
     include Singleton
 
     attr_reader :db
@@ -31,9 +30,8 @@ module Simpler
 
       return @router.not_found(env) unless route
 
-      path_params = route.match_params(env)
+      route.match_params(env)
       controller = route.controller.new(env)
-      controller.append_path_params(path_params)
       action = route.action
 
       make_response(controller, action)
