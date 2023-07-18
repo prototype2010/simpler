@@ -2,7 +2,6 @@ require_relative 'router/route'
 
 module Simpler
   class Router
-
     def initialize
       @routes = []
     end
@@ -22,6 +21,16 @@ module Simpler
       @routes.find { |route| route.match?(method, path) }
     end
 
+    def not_found(env)
+      response = Rack::Response.new
+      method = env['REQUEST_METHOD'].downcase.to_sym
+      path = env['PATH_INFO']
+
+      response.status = 404
+      response.write("Cannot find route by path '#{path}' with method '#{method}'")
+      response.finish
+    end
+
     private
 
     def add_route(method, path, route_point)
@@ -36,6 +45,5 @@ module Simpler
     def controller_from_string(controller_name)
       Object.const_get("#{controller_name.capitalize}Controller")
     end
-
   end
 end
